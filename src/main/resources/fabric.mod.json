@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "${mod_id}",
+	"version": "${version}",
+	"name": "Mindshaft",
+	"description": "A particular kind of minimap mod.\nDensity-based semi-3d scanning inspired by Rei's Minimap from ages long ago, but with a few new twists.",
+	"authors": [
+		"esotericist"
+	],
+	"contributors": [
+		"Abbie"
+	],
+	"contact": {
+		"homepage": "https://github.com/esotericist/mindshaft/",
+		"sources": "https://github.com/esotericist/mindshaft/",
+		"issues": "https://github.com/esotericist/mindshaft/issues/"
+	},
+	"license": "MIT",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"org.esotericist.mindshaft.Mindshaft"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"minecraft": "~${minecraft_version}",
+		"java": ">=17",
+		"fabric": "*",
+		"forgeconfigapiport": ">=${forge_config_version}"
+	}
+}

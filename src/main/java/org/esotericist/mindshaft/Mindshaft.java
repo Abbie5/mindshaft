@@ -5,28 +5,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-import net.minecraftforge.common.MinecraftForge;
-
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
 import org.apache.logging.log4j.LogManager;
 
 import org.apache.logging.log4j.Logger;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.api.fml.event.config.ModConfigEvent;
 
-@Mod(Mindshaft.MODID)
-@Mod.EventBusSubscriber(modid = Mindshaft.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Mindshaft {
+public class Mindshaft implements ClientModInitializer, ModConfigEvent.Loading, ClientTickEvents.EndTick, HudRenderCallback {
     public static final String MODID = "mindshaft";
     public static final String NAME = "Mindshaft";
 
@@ -42,9 +33,18 @@ public class Mindshaft {
 
     private static mindshaftScanner scanner = new mindshaftScanner();
 
-    public Mindshaft() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, mindshaftConfig.CLIENT_SPEC);
+    @Override
+    public void onInitializeClient() {
+        ModLoadingContext.registerConfig(MODID, ModConfig.Type.CLIENT, mindshaftConfig.CLIENT_SPEC);
+        logger.info("setup");
+        bakeandzoom();
+        input = new inputHandler();
+        Minecraft.getInstance().tell(new assetinit());
+
+        ModConfigEvent.LOADING.register(this);
+        ClientTickEvents.END_CLIENT_TICK.register(this);
+        HudRenderCallback.EVENT.register(this);
+        ClientTickEvents.END_CLIENT_TICK.register(input);
     }
 
     public static class assetinit implements Runnable {
@@ -58,34 +58,20 @@ public class Mindshaft {
         zoom.initzooms();
     }
 
-    public void setup(FMLClientSetupEvent event) {
-
-        logger.info("setup");
-        MinecraftForge.EVENT_BUS.register(this);
-        bakeandzoom();
-        input = new inputHandler();
-        MinecraftForge.EVENT_BUS.register(input);
-        Minecraft.getInstance().tell(new assetinit());
-
-    }
-
-    @SubscribeEvent
-    public static void onModConfigEvent(final ModConfigEvent configEvent) {
-        ModConfig config = configEvent.getConfig();
+    @Override
+    public void onModConfigLoading(ModConfig config) {
         if (config != null && config.getSpec() == mindshaftConfig.CLIENT_SPEC) {
             mindshaftConfig.dirtyconfig = true;
         }
     }
 
-    @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event) {
+    @Override
+    public void onEndTick(Minecraft mc) {
 
-        if (mindshaftConfig.dirtyconfig == true) {
+        if (mindshaftConfig.dirtyconfig) {
             bakeandzoom();
             mindshaftConfig.dirtyconfig = false;
         }
-        if (event.phase == TickEvent.Phase.END) {
-            Minecraft mc = Minecraft.getInstance();
 
             player = mc.player;
             Level world = mc.level;
@@ -108,12 +94,11 @@ public class Mindshaft {
                 scanner.setDim(world.dimension().hashCode());
                 scanner.processChunks(pY, vY);
                 scanner.rasterizeLayers(pPos, vY, renderer, zoom);
-            }
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void RenderGameOverlayEvent(RenderGameOverlayEvent.Post event) {
-        renderer.doRender(event, player, zoom);
+    @Override
+    public void onHudRender(PoseStack poseStack, float partialTick) {
+        renderer.doRender(poseStack, player, zoom);
     }
 }

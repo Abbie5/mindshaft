@@ -1,12 +1,10 @@
 package org.esotericist.mindshaft;
 
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-@Mod.EventBusSubscriber(modid = Mindshaft.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class mindshaftConfig {
 
     public static boolean dirtyconfig = true;

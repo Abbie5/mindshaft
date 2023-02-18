@@ -1,22 +1,19 @@
 package org.esotericist.mindshaft;
 
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.ClientRegistry;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
-class inputHandler {
+class inputHandler implements ClientTickEvents.EndTick {
 
     private static KeyMapping[] keyBindings;
-    private boolean[] pressed;
 
-    @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
+    @Override
+    public void onEndTick(Minecraft mc) {
 
-        Minecraft mc = Minecraft.getInstance();
         if (!mc.isWindowActive()) {
             return;
         }
@@ -24,56 +21,24 @@ class inputHandler {
         zoomState zoom = Mindshaft.zoom;
 
         // binding 0: enable/disable toggle
-        if (keyBindings[0].isDown() && !pressed[0]) {
-            if (mindshaftConfig.enabled) {
-                mindshaftConfig.setEnabled(false);
-            } else {
-                mindshaftConfig.setEnabled(true);
-            }
-            pressed[0] = true;
-        }
-        if (!keyBindings[0].isDown() && pressed[0]) {
-            pressed[0] = false;
-        }
+        while (keyBindings[0].consumeClick()) mindshaftConfig.setEnabled(!mindshaftConfig.enabled);
 
         // binding 1: fullscreen toggle
         // this doesn't have a config entry because it isn't meant to be persistent
         // across sessions.
-        if (keyBindings[1].isDown() && !pressed[1]) {
-            if (zoom.fullscreen == false) {
-                zoom.fullscreen = true;
-            } else {
-                zoom.fullscreen = false;
-            }
-        }
-        if (!keyBindings[1].isDown() && pressed[1]) {
-            pressed[1] = false;
-        }
+        while (keyBindings[1].consumeClick()) zoom.fullscreen = !zoom.fullscreen;
 
         // binding 2: zoom in
-        if (keyBindings[2].isDown() && !pressed[2]) {
-            zoom.nextZoom();
-            pressed[2] = true;
-        }
-        if (!keyBindings[2].isDown() && pressed[2]) {
-            pressed[2] = false;
-        }
+        while (keyBindings[2].consumeClick()) zoom.nextZoom();
 
         // binding 3: zoom out
-        if (keyBindings[3].isDown() && !pressed[3]) {
-            zoom.prevZoom();
-            pressed[3] = true;
-        }
-        if (!keyBindings[3].isDown() && pressed[3]) {
-            pressed[3] = false;
-        }
+        while (keyBindings[3].consumeClick()) zoom.prevZoom();
 
     }
 
     public inputHandler() {
         keyBindings = new KeyMapping[4];
-        pressed = new boolean[4];
-        keyBindings[0] = new KeyMapping("mindshaft.key.toggle.desc",  InputConstants.KEY_NUMPAD1, 
+        keyBindings[0] = new KeyMapping("mindshaft.key.toggle.desc",  InputConstants.KEY_NUMPAD1,
                 "mindshaft.key.category");
         keyBindings[1] = new KeyMapping("mindshaft.key.fullscreen.desc", InputConstants.KEY_NUMPAD0,
                 "mindshaft.key.category");
@@ -83,8 +48,7 @@ class inputHandler {
                 "mindshaft.key.category");
 
         for (int i = 0; i < keyBindings.length; ++i) {
-            ClientRegistry.registerKeyBinding(keyBindings[i] );
-            pressed[i] = false;
+            KeyBindingHelper.registerKeyBinding(keyBindings[i] );
         }
     }
 
