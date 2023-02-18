@@ -15,9 +15,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.api.fml.event.config.ModConfigEvent;
+import net.minecraftforge.api.fml.event.config.ModConfigEvents;
 
-public class Mindshaft implements ClientModInitializer, ModConfigEvent.Loading, ClientTickEvents.EndTick, HudRenderCallback {
+public class Mindshaft implements ClientModInitializer, ModConfigEvents.Loading, ClientTickEvents.EndTick, HudRenderCallback {
     public static final String MODID = "mindshaft";
     public static final String NAME = "Mindshaft";
 
@@ -41,7 +41,7 @@ public class Mindshaft implements ClientModInitializer, ModConfigEvent.Loading, 
         input = new inputHandler();
         Minecraft.getInstance().tell(new assetinit());
 
-        ModConfigEvent.LOADING.register(this);
+        ModConfigEvents.loading(MODID).register(this);
         ClientTickEvents.END_CLIENT_TICK.register(this);
         HudRenderCallback.EVENT.register(this);
         ClientTickEvents.END_CLIENT_TICK.register(input);
