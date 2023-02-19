@@ -23,7 +23,7 @@ class zoomState {
             zoomlist[i].setZoomSpec(zoomsize);
         }
         for (int i = 0; i < zoomcount; ++i) {
-            Mindshaft.logger.info("zoomlist: " + i + ", x:" + zoomlist[i].x + ", z:" + zoomlist[i].z + ", w:"
+            Constants.LOG.info("zoomlist: " + i + ", x:" + zoomlist[i].x + ", z:" + zoomlist[i].z + ", w:"
                     + zoomlist[i].w + ", minU:" + zoomlist[i].minU + ", minV:" + zoomlist[i].minV + ", maxU:"
                     + zoomlist[i].maxU + ", maxV:" + zoomlist[i].maxV);
         }

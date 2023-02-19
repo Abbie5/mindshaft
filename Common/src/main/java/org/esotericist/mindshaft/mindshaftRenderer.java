@@ -2,7 +2,7 @@ package org.esotericist.mindshaft;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraft.client.gui.Gui;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
@@ -15,9 +15,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Quaternion;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
+import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL11;
 
 class mindshaftRenderer {
@@ -82,7 +81,7 @@ class mindshaftRenderer {
     }
 
     
-    public void doRender(RenderGameOverlayEvent.Post event, Player player, zoomState zoom) {
+    public void doRender(PoseStack stack, Player player, zoomState zoom) {
 
         if ((!mindshaftConfig.enabled) && !(zoom.fullscreen) || (player == null)) {
             return;
@@ -90,7 +89,6 @@ class mindshaftRenderer {
 
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder renderer = tessellator.getBuilder();
-        PoseStack stack = event.getMatrixStack();
 
         stack.pushPose();
 
@@ -102,8 +100,8 @@ class mindshaftRenderer {
         double offsetU = ((player.getX()) - (lastX * 16)) * texelsize;
         double offsetV = ((player.getZ()) - (lastZ * 16)) * texelsize;
 
-        double screenX = event.getWindow().getGuiScaledWidth();
-        double screenY = event.getWindow().getGuiScaledHeight();
+        double screenX = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+        double screenY = Minecraft.getInstance().getWindow().getGuiScaledHeight();
 
         double mapsize = mindshaftConfig.getMapsize() * screenY;
         double fsmapsize = mindshaftConfig.getFSMapsize() * screenY;
@@ -170,9 +168,9 @@ class mindshaftRenderer {
         stack.translate(minX + (mapsize / 2), minY + (mapsize / 2), 0.0d);
         double centeroffset = cursorsize / 16.0;
 
-        stack.mulPose(Quaternion.fromXYZ(0f, 0f, (180 + player.getYHeadRot()) * ((float)Math.PI / 180F)));
+        stack.mulPose(new Quaternionf().rotationZ((180 + player.getYHeadRot()) * ((float)Math.PI / 180F)));
         stack.translate(-((cursorsize - centeroffset) / 2), -((cursorsize - centeroffset) / 2), 0);
-        ForgeIngameGui.blit(stack, 0, 0, 0f, 0f, cursorsize, cursorsize, cursorsize, cursorsize);
+        Gui.blit(stack, 0, 0, 0f, 0f, cursorsize, cursorsize, cursorsize, cursorsize);
 
         stack.popPose();
     }
