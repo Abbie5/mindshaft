@@ -41,12 +41,11 @@ public class CommonClass {
         zoom.initzooms();
     }
 
-    public static void onEndTick() {
+    public static void onEndTick(Minecraft mc) {
         if (mindshaftConfig.dirtyconfig) {
             bakeandzoom();
             mindshaftConfig.dirtyconfig = false;
         }
-        Minecraft mc = Minecraft.getInstance();
 
         player = mc.player;
         Level world = mc.level;
@@ -88,7 +87,7 @@ public class CommonClass {
         }
     }
 
-    public static void renderGameOverlay(PoseStack stack) {
+    public static void renderGameOverlay(PoseStack stack, float tickDelta) {
         renderer.doRender(stack, player, zoom);
     }
 

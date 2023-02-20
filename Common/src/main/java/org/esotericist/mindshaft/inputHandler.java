@@ -14,9 +14,8 @@ class inputHandler {
             new KeyMapping("mindshaft.key.zoomout.desc",    InputConstants.KEY_NUMPAD3, "mindshaft.key.category")
     };
 
-    public static void onKeyInput() {
+    public static void onKeyInput(Minecraft mc) {
 
-        Minecraft mc = Minecraft.getInstance();
         if (!mc.isWindowActive()) {
             return;
         }
