@@ -1,8 +1,9 @@
 package org.esotericist.mindshaft.platform;
 
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLLoader;
+
 import org.esotericist.mindshaft.platform.services.IPlatformHelper;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.FMLLoader;
 
 public class ForgePlatformHelper implements IPlatformHelper {
 

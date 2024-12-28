@@ -1,12 +1,15 @@
 package org.esotericist.mindshaft;
 
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.config.ModConfig;
+
+import net.neoforged.fml.config.IConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.function.Consumer;
 
@@ -81,13 +84,13 @@ public class CommonClass {
         }
     }
 
-    public static void onModConfigEvent(ModConfig config) {
-        if (config != null && config.getSpec() == mindshaftConfig.CLIENT_SPEC) {
+    public static void onModConfigEvent(Object config, IConfigSpec spec) {
+        if (config != null && spec == mindshaftConfig.CLIENT_SPEC) {
             mindshaftConfig.dirtyconfig = true;
         }
     }
 
-    public static void renderGameOverlay(GuiGraphics gui, float tickDelta) {
+    public static void renderGameOverlay(GuiGraphics gui, DeltaTracker deltaTracker) {
         renderer.doRender(gui, player, zoom);
     }
 

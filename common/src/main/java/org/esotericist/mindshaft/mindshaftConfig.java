@@ -1,42 +1,44 @@
 package org.esotericist.mindshaft;
 
-import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+
+import net.neoforged.neoforge.common.ModConfigSpec;
+
 public class mindshaftConfig {
 
     public static boolean dirtyconfig = true;
 
 	public static final ClientConfig CLIENT;
-	public static final ForgeConfigSpec CLIENT_SPEC;
+	public static final ModConfigSpec CLIENT_SPEC;
 	static {
-		final Pair<ClientConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
+		final Pair<ClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ClientConfig::new);
 		CLIENT_SPEC = specPair.getRight();
 		CLIENT = specPair.getLeft();
 	}
 
     public static boolean enabled = true;
 
-    static ForgeConfigSpec.ConfigValue<Boolean> v_enabled;
-    static ForgeConfigSpec.ConfigValue<Integer> v_zoom;
-    static ForgeConfigSpec.ConfigValue<Integer> v_zoomfs;
-    static ForgeConfigSpec.ConfigValue<Boolean> v_zoomwrap;
-    static ForgeConfigSpec.ConfigValue<Integer> v_chunkrate;
-    static ForgeConfigSpec.ConfigValue<Integer> v_refreshdelay;
-    static ForgeConfigSpec.ConfigValue<Integer> v_mapwidth;
-    static ForgeConfigSpec.ConfigValue<Integer> v_mapwidthfs;
-    static ForgeConfigSpec.ConfigValue<Boolean> v_offsetfromleft;
-    static ForgeConfigSpec.ConfigValue<Integer> v_offsetX;
-    static ForgeConfigSpec.ConfigValue<Boolean> v_offsetfromtop;
-    static ForgeConfigSpec.ConfigValue<Integer> v_offsetY;
-    static ForgeConfigSpec.ConfigValue<Integer> v_cursorsize;
-    static ForgeConfigSpec.ConfigValue<Integer> v_cursorsizefs;
-    static ForgeConfigSpec.ConfigValue<Integer> v_cursoropacity;
-    static ForgeConfigSpec.ConfigValue<Integer> v_cursoropacityfs;
-    static ForgeConfigSpec.ConfigValue<Integer> v_forcedExpiry;
-    static ForgeConfigSpec.ConfigValue<List<? extends String>> v_zoomlevels;
+    static ModConfigSpec.ConfigValue<Boolean> v_enabled;
+    static ModConfigSpec.ConfigValue<Integer> v_zoom;
+    static ModConfigSpec.ConfigValue<Integer> v_zoomfs;
+    static ModConfigSpec.ConfigValue<Boolean> v_zoomwrap;
+    static ModConfigSpec.ConfigValue<Integer> v_chunkrate;
+    static ModConfigSpec.ConfigValue<Integer> v_refreshdelay;
+    static ModConfigSpec.ConfigValue<Integer> v_mapwidth;
+    static ModConfigSpec.ConfigValue<Integer> v_mapwidthfs;
+    static ModConfigSpec.ConfigValue<Boolean> v_offsetfromleft;
+    static ModConfigSpec.ConfigValue<Integer> v_offsetX;
+    static ModConfigSpec.ConfigValue<Boolean> v_offsetfromtop;
+    static ModConfigSpec.ConfigValue<Integer> v_offsetY;
+    static ModConfigSpec.ConfigValue<Integer> v_cursorsize;
+    static ModConfigSpec.ConfigValue<Integer> v_cursorsizefs;
+    static ModConfigSpec.ConfigValue<Integer> v_cursoropacity;
+    static ModConfigSpec.ConfigValue<Integer> v_cursoropacityfs;
+    static ModConfigSpec.ConfigValue<Integer> v_forcedExpiry;
+    static ModConfigSpec.ConfigValue<List<? extends String>> v_zoomlevels;
 
     public static int[] zoomlevels = { 5, 3, 2, 1 };
     public static int zoom = 2;
@@ -86,7 +88,7 @@ public class mindshaftConfig {
     }
 
     public static class ClientConfig {
-        public ClientConfig(final ForgeConfigSpec.Builder builder) {
+        public ClientConfig(final ModConfigSpec.Builder builder) {
             
             v_enabled = builder.comment("whether mindshaft is currently enabled.").define( "enabled", false );
 

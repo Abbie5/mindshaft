@@ -1,10 +1,10 @@
 plugins {
     id 'multiloader-loader'
-    id 'net.neoforged.moddev.legacyforge'
+    id 'net.neoforged.moddev'
 }
 
-legacyForge {
-    version = "${minecraft_version}-${forge_version}"
+neoForge {
+    version = neoforge_version
     // Automatically enable neoforge AccessTransformers if the file exists
     def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {

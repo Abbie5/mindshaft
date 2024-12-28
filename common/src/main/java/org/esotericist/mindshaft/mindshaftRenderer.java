@@ -65,7 +65,7 @@ class mindshaftRenderer {
 
         mapTexture = new DynamicTexture(texturesize, texturesize, true);
         mapresource = textureManager.register("mindshafttexture", mapTexture);
-        playericon = new ResourceLocation("mindshaft", "textures/playericon.png");
+        playericon = ResourceLocation.fromNamespaceAndPath("mindshaft", "textures/playericon.png");
 
         for (int i = 0; i < texturesize; i++) {
             for (int j = 0; j < texturesize; j++) {
@@ -90,7 +90,7 @@ class mindshaftRenderer {
         }
 
         Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder renderer = tessellator.getBuilder();
+        BufferBuilder renderer = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
         stack.pushPose();
 
@@ -149,13 +149,11 @@ class mindshaftRenderer {
         float maxU = (float) (currentzoom.maxU + offsetU);
         float maxV = (float) (currentzoom.maxV + offsetV);
 
-        renderer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-
-        renderer.vertex(minX, maxY, 0).uv(minU, maxV).endVertex();
-        renderer.vertex(maxX, maxY, 0).uv(maxU, maxV).endVertex();
-        renderer.vertex(maxX, minY, 0).uv(maxU, minV).endVertex();
-        renderer.vertex(minX, minY, 0).uv(minU, minV).endVertex();
-        tessellator.end();
+        renderer.addVertex((float) minX, (float) maxY, 0).setUv(minU, maxV);
+        renderer.addVertex((float) maxX, (float) maxY, 0).setUv(maxU, maxV);
+        renderer.addVertex((float) maxX, (float) minY, 0).setUv(maxU, minV);
+        renderer.addVertex((float) minX, (float) minY, 0).setUv(minU, minV);
+        tessellator.clear();
 
 
         stack.popPose();
