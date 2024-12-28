@@ -2,11 +2,12 @@ package org.esotericist.mindshaft;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.Gui;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.*;
+
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -81,7 +82,8 @@ class mindshaftRenderer {
     }
 
     
-    public void doRender(PoseStack stack, Player player, zoomState zoom) {
+    public void doRender(GuiGraphics gui, Player player, zoomState zoom) {
+        PoseStack stack = gui.pose();
 
         if ((!mindshaftConfig.enabled) && !(zoom.fullscreen) || (player == null)) {
             return;
@@ -170,7 +172,7 @@ class mindshaftRenderer {
 
         stack.mulPose(new Quaternionf().rotationZ((180 + player.getYHeadRot()) * ((float)Math.PI / 180F)));
         stack.translate(-((cursorsize - centeroffset) / 2), -((cursorsize - centeroffset) / 2), 0);
-        Gui.blit(stack, 0, 0, 0f, 0f, cursorsize, cursorsize, cursorsize, cursorsize);
+        gui.blit(playericon, 0, 0, 0f, 0f, cursorsize, cursorsize, cursorsize, cursorsize);
 
         stack.popPose();
     }

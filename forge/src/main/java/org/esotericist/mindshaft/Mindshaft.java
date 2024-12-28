@@ -31,7 +31,7 @@ public class Mindshaft {
 
         forgeEventBus.addListener((TickEvent.ClientTickEvent e) -> { if (e.phase == TickEvent.Phase.END) CommonClass.onEndTick(Minecraft.getInstance()); });
         forgeEventBus.addListener((InputEvent.Key e) -> inputHandler.onKeyInput(Minecraft.getInstance()));
-        forgeEventBus.addListener((RenderGuiOverlayEvent.Post e) -> CommonClass.renderGameOverlay(e.getPoseStack(), e.getPartialTick()));
+        forgeEventBus.addListener((RenderGuiOverlayEvent.Post e) -> CommonClass.renderGameOverlay(e.getGuiGraphics(), e.getPartialTick()));
 
         modEventBus.addListener((FMLClientSetupEvent e) -> CommonClass.setup());
         modEventBus.addListener((ModConfigEvent e) -> CommonClass.onModConfigEvent(e.getConfig()));

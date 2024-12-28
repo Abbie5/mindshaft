@@ -1,8 +1,8 @@
 package org.esotericist.mindshaft;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -59,7 +59,7 @@ public class CommonClass {
             // whether on a normal block, on farmland (so slightly below normal), or
             // on a slab (half a block above normal)
             int pY = (int) (Math.ceil(player.getY() - (17 / 32D)));
-            BlockPos pPos = new BlockPos(player.getX(), pY, player.getZ());
+            BlockPos pPos = new BlockPos(player.getBlockX(), pY, player.getBlockZ());
             double rawV = player.getDeltaMovement().y;
             int vY = (int) (rawV > 0 ? Math.ceil(rawV) : Math.floor(rawV));
 
@@ -87,8 +87,8 @@ public class CommonClass {
         }
     }
 
-    public static void renderGameOverlay(PoseStack stack, float tickDelta) {
-        renderer.doRender(stack, player, zoom);
+    public static void renderGameOverlay(GuiGraphics gui, float tickDelta) {
+        renderer.doRender(gui, player, zoom);
     }
 
 }
