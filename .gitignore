@@ -33,3 +33,5 @@ deps
 *.db
 
 logs/
+
+fabric/runs/
